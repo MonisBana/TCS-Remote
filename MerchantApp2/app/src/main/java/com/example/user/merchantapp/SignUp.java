@@ -2,6 +2,7 @@ package com.example.user.merchantapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,11 +34,11 @@ public class SignUp extends AppCompatActivity {
         mNameField = findViewById(R.id.nameField);
         mSignBtn = findViewById(R.id.signupBtn);
         mAuth = FirebaseAuth.getInstance();
-        mNameField.setText("Monis");
+       /* mNameField.setText("Monis");
         mEmailField.setText("test@123.com");
         mPasswordField.setText("79918031");
         mConfirmPassword.setText("79918031");
-        mMobileField.setText("79918031");
+        mMobileField.setText("79918031");*/
         mSignBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,9 +64,9 @@ public class SignUp extends AppCompatActivity {
                             i.putExtra("email",email);
                             i.putExtra("mobile",mobile);
                             i.putExtra("name",name);
-                            Toast.makeText(SignUp.this, name+mobile+"", Toast.LENGTH_SHORT).show();
+                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("login",Boolean.FALSE).apply();
                             startActivity(i);
-
+                            SignUp.this.finish();
                         }
                         else {
                             if(pd.isShowing())

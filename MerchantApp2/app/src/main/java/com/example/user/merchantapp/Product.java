@@ -1,15 +1,45 @@
 package com.example.user.merchantapp;
 
 public class Product {
-    String name,desc,image;
+    String name,desc,image,id,userid,category;
     int price,quantity;
 
-    public Product(String name, String desc, String image, int price, int quantity) {
+    public Product() {
+    }
+
+    public Product(String name, String desc, String image, String id, String userid, String category, int price, int quantity) {
         this.name = name;
         this.desc = desc;
         this.image = image;
+        this.id = id;
+        this.userid = userid;
+        this.category = category;
         this.price = price;
         this.quantity = quantity;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

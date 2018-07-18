@@ -15,18 +15,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
-public class PostProduct extends AppCompatActivity {
+public class EditProduct extends AppCompatActivity {
+
     private EditText mNameField,mDescField,mPriceField,mQuantityFild;
     private Spinner mCategory;
-    private Button mPostBtn;
+    private Button mUpdateBtn;
     private ImageButton mSelectImage;
     private String Category;
     private Uri mImageUri = null;
@@ -35,19 +41,23 @@ public class PostProduct extends AppCompatActivity {
     private DatabaseReference mPostReference,mUserReference;
     private ProgressDialog mProgressDialog;
     private StorageReference mStorageReference;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_product);
+        setContentView(R.layout.activity_edit_product);
         mNameField = findViewById(R.id.nameField);
         mDescField = findViewById(R.id.descField);
         mPriceField = findViewById(R.id.priceField);
         mQuantityFild = findViewById(R.id.quantityField);
         mCategory = findViewById(R.id.category);
-        mPostBtn = findViewById(R.id.postBtn);
+        mUpdateBtn = findViewById(R.id.updateBtn);
         mSelectImage = findViewById(R.id.imageSelect);
         mProgressDialog = new ProgressDialog(this);
+        Intent intent = getIntent();
+        id = intent.getStringExtra("productId");
+        Category = intent.getStringExtra("category");
         mPostReference = FirebaseDatabase.getInstance().getReference().child("Products");
         mUserReference = FirebaseDatabase.getInstance().getReference().child("User");
         mStorageReference = FirebaseStorage.getInstance().getReference();
@@ -55,7 +65,18 @@ public class PostProduct extends AppCompatActivity {
         mDescField.setText("jbhj");
         mPriceField.setText("76");
         mQuantityFild.setText("226");*/
-        ArrayAdapter<String> categorys=new ArrayAdapter<String>(PostProduct.this,android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.category_arrays));
+        String name = intent.getStringExtra("name");
+        String desc = intent.getStringExtra("desc");
+        int price = intent.getIntExtra("price",1);
+        int quantity = intent.getIntExtra("quantity",1);
+        String image = intent.getStringExtra("image");
+        //Toast.makeText(this,price+ "", Toast.LENGTH_SHORT).show();
+        mNameField.setText(name);
+        mDescField.setText(desc);
+        mPriceField.setText(price+"");
+        mQuantityFild.setText(quantity+"");
+        Picasso.with(getApplicationContext()).load(image).into(mSelectImage);
+        ArrayAdapter<String> categorys=new ArrayAdapter<String>(EditProduct.this,android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.category_arrays));
         categorys.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCategory.setAdapter(categorys);
         mCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -79,7 +100,7 @@ public class PostProduct extends AppCompatActivity {
             }
         });
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSIONS_REQUEST_READ_STORAGE);
-        mPostBtn.setOnClickListener(new View.OnClickListener() {
+        mUpdateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startPosting();
@@ -101,13 +122,12 @@ public class PostProduct extends AppCompatActivity {
                 String image = downloadUrl.toString();
                 int  quantity = Integer.parseInt(String.valueOf(mQuantityFild.getText()));
                 int  price = Integer.parseInt(String.valueOf(mPriceField.getText()));
-                String id = mPostReference.child(Category).push().getKey();
                 String userId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("userId","abc");
-                Product product = new Product(name, desc, image, id, userId,Category, price, quantity);
+                Product product = new Product(name, desc, image,id,userId,Category, price, quantity);
                 mPostReference.child(Category).child(id).setValue(product);
                 mUserReference.child(userId).child("Products").child(id).setValue(product);
                 mProgressDialog.dismiss();
-                Intent i = new Intent(PostProduct.this,MainActivity.class);
+                Intent i = new Intent(EditProduct.this,MainActivity.class);
                 startActivity(i);
             }
         });

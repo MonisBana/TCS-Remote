@@ -1,0 +1,146 @@
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:id="@+id/swipe"
+    app:leftEdgeSwipeOffset="0dp"
+    app:rightEdgeSwipeOffset="0dp"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:id="@+id/bottom_wraper"
+        android:layout_width="80dp"
+        android:weightSum="1"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/Delete"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorPrimaryLight"
+            android:gravity="center"
+            android:src="@android:drawable/ic_menu_delete"
+            android:text="Delete"
+            android:textColor="#fff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_wrapper1"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+        <ImageButton
+            android:id="@+id/btnLocation"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorPrimaryLight"
+            android:gravity="center"
+            android:src="@android:drawable/ic_menu_edit" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+        <TextView
+            android:id="@+id/productName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/productImage"
+            android:fontFamily="@font/raleway_semibold"
+            android:text="Samsung Galaxy J8"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/grayview"
+            android:layout_width="170dp"
+            android:layout_height="1dp"
+            android:layout_below="@+id/productName"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@id/productImage"
+            android:background="@color/lightgray" />
+
+        <TextView
+            android:id="@+id/productPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/productCategory"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="-7dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/raleway_semibold"
+            android:text="₹58,000"
+            android:textColor="@color/colorAccent"
+            android:textSize="16dp"
+            android:layout_marginLeft="8dp"/>
+
+        <TextView
+            android:id="@+id/productCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/grayview"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="7dp"
+            android:layout_toRightOf="@id/productImage"
+            android:fontFamily="@font/raleway_semibold"
+            android:text="Mobiles"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/productQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/grayview"
+            android:layout_marginLeft="135dp"
+            android:layout_marginTop="7dp"
+            android:layout_toRightOf="@id/productImage"
+            android:fontFamily="@font/raleway_semibold"
+            android:text="25"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/categoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/productCategory"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@id/productImage"
+            android:alpha="0.8"
+            android:fontFamily="@font/raleway_regular"
+            android:text="Category" />
+
+        <TextView
+            android:id="@+id/quantityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/productQuantity"
+            android:layout_marginLeft="130dp"
+            android:layout_toRightOf="@id/productImage"
+            android:alpha="0.8"
+            android:fontFamily="@font/raleway_regular"
+            android:text="Quantity" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightgray"
+            android:layout_margin="20dp"
+            android:layout_below="@id/productImage"/>
+    </RelativeLayout>
+
+</com.daimajia.swipe.SwipeLayout>
+

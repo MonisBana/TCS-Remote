@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PostProduct">
+    tools:context=".EditProduct">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -119,18 +119,17 @@
             android:fontFamily="@font/raleway_regular"
             android:textSize="16dp"
             android:alpha="0.75"/>
-
         <Button
-            android:id="@+id/postBtn"
+            android:id="@+id/updateBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/category"
-            android:text="Post"
+            android:text="UPDATE"
             android:fontFamily="@font/raleway_semibold"
             android:textSize="14dp"
             android:background="@color/colorPrimary"
             android:textColor="@color/white"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            />
     </RelativeLayout>
-
 </ScrollView>
