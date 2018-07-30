@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+       setContentView(R.layout.activity_login);
         pd = new ProgressDialog(Login.this);
         pd.setMessage("Please Wait...");
         mEmailField = findViewById(R.id.email);
@@ -40,27 +40,16 @@ public class Login extends AppCompatActivity {
         mLoginBtn = findViewById(R.id.loginBtn);
         mSignUpBtn = findViewById(R.id.signupBtn);
         mAuth = FirebaseAuth.getInstance();
-        mCustomerReference = FirebaseDatabase.getInstance().getReference().child("User");
-        /*mEmailField.setText("test@123.com");
-        mPasswordField.setText("79918031");*/
+        mCustomerReference = FirebaseDatabase.getInstance().getReference().child("Customer");
+        mEmailField.setText("456@test.com");
+        mPasswordField.setText("79918031");
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String Email = mEmailField.getText().toString();
                 String Password = mPasswordField.getText().toString();
-               /* pd.show();
-                login(Email, Password);*/
-                mCustomerReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Toast.makeText(Login.this, dataSnapshot.child("email").getValue()+"", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                pd.show();
+                login(Email, Password);
             }
         });
         mSignUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +69,22 @@ public class Login extends AppCompatActivity {
                             if(pd.isShowing())
                                 pd.dismiss();
 
+                            mCustomerReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot fire : dataSnapshot.getChildren()) {
+                                        Customer temp = fire.getValue(Customer.class);
+                                        if (temp.getEmail().equals(id)) {
+                                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("customerId",temp.getCustomerid()).apply();
+                                            //Toast.makeText(MyProduct.this,mDataSet.size()+ "", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                                }
+                            });
                             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("loggedIn", Boolean.TRUE).apply();
                             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("login", Boolean.TRUE).apply();
                             Intent i = new Intent(Login.this,HomeActivity.class);

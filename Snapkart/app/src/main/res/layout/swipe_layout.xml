@@ -54,7 +54,7 @@
             android:layout_marginTop="7dp"
             android:layout_toRightOf="@id/productImage"
             android:fontFamily="@font/raleway_semibold"
-            android:text="₹58,000"
+                android:text="₹58,000"
             android:textSize="16dp"
             android:textColor="@color/colorAccent"/>
 

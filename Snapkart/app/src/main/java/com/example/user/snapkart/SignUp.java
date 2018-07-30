@@ -17,7 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUp extends AppCompatActivity {
-    private EditText mEmailField,mPasswordField,mConfirmPassword,mMobileField,mNameField;
+    private EditText mEmailField,mPasswordField,mConfirmPassword,mMobileField,mNameField,mAddressField;
     private Button mSignBtn;
     private FirebaseAuth mAuth;
     private ProgressDialog pd;
@@ -32,13 +32,15 @@ public class SignUp extends AppCompatActivity {
         mConfirmPassword = findViewById(R.id.confirmPasswordField);
         mMobileField = findViewById(R.id.mobileField);
         mNameField = findViewById(R.id.nameField);
+        mAddressField = findViewById(R.id.addressField);
         mSignBtn = findViewById(R.id.signupBtn);
         mAuth = FirebaseAuth.getInstance();
-       /* mNameField.setText("Monis");
-        mEmailField.setText("test@123.com");
+        mNameField.setText("Monis");
+        mEmailField.setText("456@test.com");
         mPasswordField.setText("79918031");
         mConfirmPassword.setText("79918031");
-        mMobileField.setText("79918031");*/
+        mMobileField.setText("79918031");
+        mAddressField.setText("bsdubg jgeijsei grhhrtd hgggwuiu8e  hkuhrbf");
         mSignBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,13 +48,14 @@ public class SignUp extends AppCompatActivity {
                 String Password = mPasswordField.getText().toString();
                 String Name = mNameField.getText().toString();
                 String Mobile = mMobileField.getText().toString();
+                String Address = mAddressField.getText().toString();
                 pd.show();
-                signup(Email, Password, Name, Mobile);
+                signup(Email, Password, Name, Mobile,Address);
             }
         });
     }
 
-    private void signup(final String email, String password, final String name, final String mobile) {
+    private void signup(final String email, String password, final String name, final String mobile, final String address) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -64,6 +67,7 @@ public class SignUp extends AppCompatActivity {
                             i.putExtra("email",email);
                             i.putExtra("mobile",mobile);
                             i.putExtra("name",name);
+                            i.putExtra("address",address);
                             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("login", Boolean.FALSE).apply();
                             startActivity(i);
                             SignUp.this.finish();

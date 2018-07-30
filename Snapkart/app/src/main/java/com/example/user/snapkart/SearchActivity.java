@@ -2,6 +2,7 @@ package com.example.user.snapkart;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,7 @@ public class SearchActivity extends AppCompatActivity {
     private int Price;
     private DatabaseReference mProductReference;
     private TextView mPriceLabel,mCategoryLabel;
+    private String CustomerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,8 @@ public class SearchActivity extends AppCompatActivity {
 
             }
         });
+        CustomerId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("customerId","abc");
+        Toast.makeText(this, CustomerId+"", Toast.LENGTH_SHORT).show();
     }
 
     private void loadFilteredPriceData(String category, final int price, final String searchQuery) {

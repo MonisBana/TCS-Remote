@@ -1,2 +1,1 @@
-include ':app', ':library'
-project(':library').projectDir = new File('Discrete-Slider-master/library')
+include ':app', ':sdkui' ,":payUMoneysdk"

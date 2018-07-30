@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore.Images.Media;
 import android.support.annotation.NonNull;
 import android.view.SurfaceHolder;
@@ -23,6 +24,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
@@ -32,23 +35,31 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-public class HomeActivity extends Activity implements OnClickListener,
-        SurfaceHolder.Callback, Camera.PictureCallback {
+public class HomeActivity extends Activity implements OnClickListener, SurfaceHolder.Callback, Camera.PictureCallback {
     SurfaceView cameraView;
     SurfaceHolder surfaceHolder;
     Camera camera;
     private String result;
     private TextView mResult;
     private ImageButton mClick,mSearch;
+    private String Name,Mobile,Email,Address;
+    private DatabaseReference mCustomerReference;
+    private String CustomerId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Intent intent = getIntent();
+        Name = intent.getStringExtra("name");
+        Mobile = intent.getStringExtra("mobile");
+        Email = intent.getStringExtra("email");
+        Address = intent.getStringExtra("address");
         cameraView = (SurfaceView) this.findViewById(R.id.surfaceView1);
         mResult = findViewById(R.id.result);
         mClick = findViewById(R.id.click);
         mSearch = findViewById(R.id.searchBtn);
+        mCustomerReference = FirebaseDatabase.getInstance().getReference().child("Customer");
         surfaceHolder = cameraView.getHolder();
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         surfaceHolder.addCallback(this);
@@ -64,6 +75,16 @@ public class HomeActivity extends Activity implements OnClickListener,
                 startActivity(i);
             }
         });
+        mCustomerReference = FirebaseDatabase.getInstance().getReference().child("Customer");
+        Boolean login = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("login",Boolean.TRUE);
+        //Toast.makeText(this, UserId+"", Toast.LENGTH_SHORT).show();
+        if(login.equals(Boolean.FALSE)){
+            String id = mCustomerReference.push().getKey();
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("customerId",id).apply();
+            Customer customer = new Customer(Name,Mobile,Email,id,Address);
+            mCustomerReference.child(id).setValue(customer);
+            //Toast.makeText(this,"Login", Toast.LENGTH_SHORT).show();
+        }
     }
     public void onClick(View v) {
         if(mClick.isPressed()){

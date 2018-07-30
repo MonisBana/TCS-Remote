@@ -19,24 +19,6 @@
             android:layout_height="wrap_content"
             android:paddingTop="12dp"/>
 
-        <com.etiennelawlor.discreteslider.library.ui.DiscreteSlider
-            android:id="@+id/discrete_slider"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginBottom="4dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:background="@color/grey_100"
-            app:backdropFillColor="@color/grey_200"
-            app:backdropStrokeColor="@color/grey_300"
-            app:backdropStrokeWidth="1dp"
-            app:horizontalBarThickness="4dp"
-            app:tickMarkCount="5"
-            app:tickMarkRadius="8dp"
-            app:position="1"
-            app:thumb="@drawable/thumb"
-            app:progressDrawable="@drawable/transparent_progress_drawable"/>
-
     </LinearLayout>
 
 </FrameLayout>
