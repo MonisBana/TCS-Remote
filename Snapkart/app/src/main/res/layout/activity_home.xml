@@ -17,25 +17,39 @@
         android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"
         android:background="#00ffffff"/>
-    <TextView
+    <ImageButton
         android:id="@+id/result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Hello"
+        android:src="@drawable/heartw_48"
+        android:background="#00ffffff"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="20dp"
         android:textSize="18dp"
         android:layout_toLeftOf="@id/click"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="60dp"
+        android:visibility="gone"/>
     <ImageButton
         android:id="@+id/searchBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/search"
+        android:src="@drawable/search_48"
         android:background="#00ffffff"
         android:layout_toRightOf="@+id/click"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="60dp"/>
+    <ImageButton
+        android:id="@+id/cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/cart_48"
+        android:background="#00ffffff"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/click"
+        android:layout_marginLeft="60dp"
+        android:textSize="18dp"
+        android:visibility="gone"/>
 </RelativeLayout>

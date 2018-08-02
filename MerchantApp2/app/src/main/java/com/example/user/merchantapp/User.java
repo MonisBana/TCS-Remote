@@ -3,13 +3,33 @@ package com.example.user.merchantapp;
 import java.util.ArrayList;
 
 public class User {
-    private String name,mobile,email;
+    private String name,mobile,email,userId;
     private ArrayList<Product> product;
 
-    public User(String name, String mobile, String email) {
+    public User() {
+    }
+
+    public User(String name, String mobile, String email, String userId) {
         this.name = name;
         this.mobile = mobile;
         this.email = email;
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public ArrayList<Product> getProduct() {
+        return product;
+    }
+
+    public void setProduct(ArrayList<Product> product) {
+        this.product = product;
     }
 
     public String getName() {

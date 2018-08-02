@@ -47,7 +47,7 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int price = discreteSeekBar1.getProgress()*1000;
-                Toast.makeText(FilterActivity.this,price+ "", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(FilterActivity.this,price+ "", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(FilterActivity.this,SearchActivity.class);
                 i.putExtra("category",Category);
                 i.putExtra("price",price);

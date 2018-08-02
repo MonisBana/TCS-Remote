@@ -103,7 +103,7 @@ public class PostProduct extends AppCompatActivity {
                 int  price = Integer.parseInt(String.valueOf(mPriceField.getText()));
                 String id = mPostReference.child(Category).push().getKey();
                 String userId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("userId","abc");
-                Product product = new Product(name, desc, image, id, userId,Category, price, quantity);
+                Product product = new Product(name, desc, image, id, userId,Category, price, quantity,0,0,null);
                 mPostReference.child(Category).child(id).setValue(product);
                 mUserReference.child(userId).child("Products").child(id).setValue(product);
                 mProgressDialog.dismiss();

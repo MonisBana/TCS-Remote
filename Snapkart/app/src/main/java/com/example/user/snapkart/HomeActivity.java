@@ -1,6 +1,7 @@
 package com.example.user.snapkart;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -27,6 +28,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.cloud.FirebaseVisionCloudDetectorOptions;
+import com.google.firebase.ml.vision.cloud.text.FirebaseVisionCloudDocumentTextDetector;
+import com.google.firebase.ml.vision.cloud.text.FirebaseVisionCloudText;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextDetector;
@@ -45,6 +49,7 @@ public class HomeActivity extends Activity implements OnClickListener, SurfaceHo
     private String Name,Mobile,Email,Address;
     private DatabaseReference mCustomerReference;
     private String CustomerId;
+    ProgressDialog pd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,8 +60,8 @@ public class HomeActivity extends Activity implements OnClickListener, SurfaceHo
         Mobile = intent.getStringExtra("mobile");
         Email = intent.getStringExtra("email");
         Address = intent.getStringExtra("address");
+        pd = new ProgressDialog(HomeActivity.this);
         cameraView = (SurfaceView) this.findViewById(R.id.surfaceView1);
-        mResult = findViewById(R.id.result);
         mClick = findViewById(R.id.click);
         mSearch = findViewById(R.id.searchBtn);
         mCustomerReference = FirebaseDatabase.getInstance().getReference().child("Customer");
@@ -70,6 +75,7 @@ public class HomeActivity extends Activity implements OnClickListener, SurfaceHo
             @Override
             public void onClick(View view) {
                 result="";
+                pd.dismiss();
                 Intent i  = new Intent(HomeActivity.this,SearchActivity.class);
                 i.putExtra("result",result);
                 startActivity(i);
@@ -93,6 +99,8 @@ public class HomeActivity extends Activity implements OnClickListener, SurfaceHo
         else {
             mClick.setImageResource(R.drawable.camera_act);
         }
+        pd.show();
+        pd.setMessage("Please wait.....");
         camera.takePicture(null, null, this);
     }
     public void onPictureTaken(byte[] data, Camera camera) {
@@ -145,17 +153,16 @@ public class HomeActivity extends Activity implements OnClickListener, SurfaceHo
         camera.release();
     }
     private void runTextRecognition(Bitmap bitmap) {
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
-        FirebaseVisionTextDetector detector = FirebaseVision.getInstance()
-                .getVisionTextDetector();
-        detector.detectInImage(image)
-                .addOnSuccessListener(
-                        new OnSuccessListener<FirebaseVisionText>() {
-                            @Override
-                            public void onSuccess(FirebaseVisionText texts) {
+                                    FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+                                    FirebaseVisionTextDetector detector = FirebaseVision.getInstance()
+                                            .getVisionTextDetector();
+                                    detector.detectInImage(image)
+                                            .addOnSuccessListener(
+                                                    new OnSuccessListener<FirebaseVisionText>() {
+                                                        @Override
+                                                        public void onSuccess(FirebaseVisionText texts) {
 
                                 processTextRecognitionResult(texts);
-                                mResult.setText(result);
                             }
                         })
                 .addOnFailureListener(
@@ -169,6 +176,7 @@ public class HomeActivity extends Activity implements OnClickListener, SurfaceHo
                         }).addOnCompleteListener(new OnCompleteListener<FirebaseVisionText>() {
             @Override
             public void onComplete(@NonNull Task<FirebaseVisionText> task) {
+                pd.dismiss();
                 Intent i  = new Intent(HomeActivity.this,SearchActivity.class);
                 i.putExtra("result",result);
                 startActivity(i);
@@ -180,7 +188,7 @@ public class HomeActivity extends Activity implements OnClickListener, SurfaceHo
         result = "";
         List<FirebaseVisionText.Block> blocks = texts.getBlocks();
         if (blocks.size() == 0) {
-            Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No Text Found", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -194,4 +202,66 @@ public class HomeActivity extends Activity implements OnClickListener, SurfaceHo
             }
         }
     }
+/*   private void runTextRecognition(Bitmap bitmap) {
+       FirebaseVisionCloudDetectorOptions options =
+               new FirebaseVisionCloudDetectorOptions.Builder()
+                       .setModelType(FirebaseVisionCloudDetectorOptions.LATEST_MODEL)
+                       .setMaxResults(15)
+                       .build();
+       FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+       FirebaseVisionCloudDocumentTextDetector detector = FirebaseVision.getInstance()
+               .getVisionCloudDocumentTextDetector(options);
+       detector.detectInImage(image)
+               .addOnSuccessListener(
+                       new OnSuccessListener<FirebaseVisionCloudText>() {
+                           @Override
+                           public void onSuccess(FirebaseVisionCloudText texts) {
+
+                               processTextRecognitionResult(texts);
+                           }
+                       })
+               .addOnFailureListener(
+                       new OnFailureListener() {
+                           @Override
+                           public void onFailure(@NonNull Exception e) {
+                               // Task failed with an exception
+
+                               e.printStackTrace();
+                           }
+                       }).addOnCompleteListener(new OnCompleteListener<FirebaseVisionCloudText>() {
+           @Override
+           public void onComplete(@NonNull Task<FirebaseVisionCloudText> task) {
+               Intent i  = new Intent(HomeActivity.this,SearchActivity.class);
+               i.putExtra("result",result);
+               startActivity(i);
+           }
+       });
+   }
+
+    private void processTextRecognitionResult(FirebaseVisionCloudText text) {
+        result = "";
+        if (text == null) {
+            Toast.makeText(this, "No text Found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        List<FirebaseVisionCloudText.Page> pages = text.getPages();
+        for (int i = 0; i < pages.size(); i++) {
+            FirebaseVisionCloudText.Page page = pages.get(i);
+            List<FirebaseVisionCloudText.Block> blocks = page.getBlocks();
+            for (int j = 0; j < blocks.size(); j++) {
+                List<FirebaseVisionCloudText.Paragraph> paragraphs = blocks.get(j).getParagraphs();
+                for (int k = 0; k < paragraphs.size(); k++) {
+                    FirebaseVisionCloudText.Paragraph paragraph = paragraphs.get(k);
+                    List<FirebaseVisionCloudText.Word> words = paragraph.getWords();
+                    for (int l = 0; l < words.size(); l++) {
+                        FirebaseVisionCloudText.Word word = words.get(k);
+                        List<FirebaseVisionCloudText.Symbol> symbols = word.getSymbols();
+                        for (int m = 0; m < symbols.size(); m++) {
+                            result = result+ symbols.get(k).getText()+" " ;
+                        }
+                    }
+                }
+            }
+        }
+    }*/
 }

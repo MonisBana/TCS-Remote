@@ -28,6 +28,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import static java.lang.Boolean.TRUE;
+
 public class EditProduct extends AppCompatActivity {
 
     private EditText mNameField,mDescField,mPriceField,mQuantityFild;
@@ -42,6 +44,7 @@ public class EditProduct extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     private StorageReference mStorageReference;
     private String id;
+    private Boolean ImageChanged = Boolean.FALSE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,7 @@ public class EditProduct extends AppCompatActivity {
         mPriceField.setText(price+"");
         mQuantityFild.setText(quantity+"");
         Picasso.with(getApplicationContext()).load(image).into(mSelectImage);
+        mImageUri = Uri.parse(image);
         ArrayAdapter<String> categorys=new ArrayAdapter<String>(EditProduct.this,android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.category_arrays));
         categorys.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCategory.setAdapter(categorys);
@@ -112,25 +116,48 @@ public class EditProduct extends AppCompatActivity {
     private void startPosting() {
         mProgressDialog.setMessage("Posting Product..");
         mProgressDialog.show();
-        StorageReference filepath = mStorageReference.child("Blog_Images").child(mImageUri.getLastPathSegment());
-        filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                String name = mNameField.getText().toString();
-                String desc = mDescField.getText().toString();
-                String image = downloadUrl.toString();
-                int  quantity = Integer.parseInt(String.valueOf(mQuantityFild.getText()));
-                int  price = Integer.parseInt(String.valueOf(mPriceField.getText()));
-                String userId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("userId","abc");
-                Product product = new Product(name, desc, image,id,userId,Category, price, quantity);
-                mPostReference.child(Category).child(id).setValue(product);
-                mUserReference.child(userId).child("Products").child(id).setValue(product);
-                mProgressDialog.dismiss();
-                Intent i = new Intent(EditProduct.this,MainActivity.class);
-                startActivity(i);
-            }
-        });
+        if(ImageChanged.equals(TRUE)) {
+            StorageReference filepath = mStorageReference.child("Blog_Images").child(mImageUri.getLastPathSegment());
+            filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    String name = mNameField.getText().toString();
+                    String desc = mDescField.getText().toString();
+                    String image = downloadUrl.toString();
+                    int quantity = Integer.parseInt(String.valueOf(mQuantityFild.getText()));
+                    int price = Integer.parseInt(String.valueOf(mPriceField.getText()));
+                    String userId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("userId", "abc");
+                    Product product = new Product(name, desc, image, id, userId, Category, price, quantity, 0, 0, null);
+                    mPostReference.child(Category).child(id).setValue(product);
+                    mUserReference.child(userId).child("Products").child(id).setValue(product);
+                    mProgressDialog.dismiss();
+                    Intent i = new Intent(EditProduct.this, MainActivity.class);
+                    startActivity(i);
+                }
+            });
+        }
+        else{
+            String name = mNameField.getText().toString();
+            String desc = mDescField.getText().toString();
+            int quantity = Integer.parseInt(String.valueOf(mQuantityFild.getText()));
+            int price = Integer.parseInt(String.valueOf(mPriceField.getText()));
+            String userId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("userId", "abc");
+            mPostReference.child(Category).child(id).child("name").setValue(name);
+            mPostReference.child(Category).child(id).child("desc").setValue(desc);
+            mPostReference.child(Category).child(id).child("price").setValue(price);
+            mPostReference.child(Category).child(id).child("quantity").setValue(quantity);
+            mPostReference.child(Category).child(id).child("category").setValue(Category);
+            mUserReference.child(userId).child("Products").child(id).child("name").setValue(name);
+            mUserReference.child(userId).child("Products").child(id).child("desc").setValue(desc);
+            mUserReference.child(userId).child("Products").child(id).child("price").setValue(price);
+            mUserReference.child(userId).child("Products").child(id).child("quantity").setValue(quantity);
+            mUserReference.child(userId).child("Products").child(id).child("category").setValue(Category);
+            mProgressDialog.dismiss();
+            Intent i = new Intent(EditProduct.this, MainActivity.class);
+            startActivity(i);
+
+        }
 
     }
 
@@ -139,6 +166,8 @@ public class EditProduct extends AppCompatActivity {
         if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK){
             mImageUri = data.getData();
             mSelectImage.setImageURI(mImageUri);
+            ImageChanged= TRUE;
+
         }
 
         super.onActivityResult(requestCode, resultCode, data);

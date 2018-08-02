@@ -16,7 +16,7 @@
             android:id="@+id/productName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="4dp"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/productImage"
@@ -29,7 +29,7 @@
             android:id="@+id/grayview"
             android:layout_width="170dp"
             android:layout_height="1dp"
-            android:layout_below="@+id/productName"
+            android:layout_below="@+id/productCategory"
             android:layout_marginLeft="25dp"
             android:layout_toRightOf="@id/productImage"
             android:background="@color/lightgray" />
@@ -37,13 +37,13 @@
             android:id="@+id/productCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/grayview"
+            android:layout_below="@id/productName"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="7dp"
             android:layout_toRightOf="@id/productImage"
             android:fontFamily="@font/raleway_semibold"
             android:text="Mobiles"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:layout_marginBottom="6dp"/>
 
         <TextView
             android:id="@+id/productPrice"
@@ -54,20 +54,38 @@
             android:layout_marginTop="7dp"
             android:layout_toRightOf="@id/productImage"
             android:fontFamily="@font/raleway_semibold"
-                android:text="₹58,000"
+            android:text="₹58,000"
             android:textSize="16dp"
             android:textColor="@color/colorAccent"/>
-
         <TextView
-            android:id="@+id/categoryLabel"
+            android:id="@+id/rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/productCategory"
+            android:text="4.2"
+            android:layout_below="@id/grayview"
+            android:layout_toRightOf="@id/productImage"
+            android:layout_marginLeft="30dp"
+            android:fontFamily="@font/raleway_semibold"
+            android:layout_marginTop="7dp"
+            android:textStyle="bold" />
+        <ImageView
+            android:src="@drawable/star_18"
+            android:layout_toRightOf="@id/rating"
+            android:layout_below="@id/grayview"
+            android:layout_marginTop="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"/>
+        <TextView
+            android:id="@+id/ratingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rating"
             android:layout_marginLeft="25dp"
             android:layout_toRightOf="@id/productImage"
             android:alpha="0.8"
             android:fontFamily="@font/raleway_regular"
-            android:text="Category" />
+            android:text="Rating" />
 
         <TextView
             android:id="@+id/priceLabel"

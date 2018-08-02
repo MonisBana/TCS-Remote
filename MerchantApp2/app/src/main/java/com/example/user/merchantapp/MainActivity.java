@@ -38,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
         mPostBtn = findViewById(R.id.postBtn);
         mMyProductsBtn = findViewById(R.id.myProductsBtn);
         mAuth = FirebaseAuth.getInstance();
-        UserId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("userId","abc");
+        //UserId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("userId","abc");
         mUserReference = FirebaseDatabase.getInstance().getReference().child("User");
         Boolean login = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("login",Boolean.TRUE);
         //Toast.makeText(this, UserId+"", Toast.LENGTH_SHORT).show();
         if(login.equals(Boolean.FALSE)){
             String id = mUserReference.push().getKey();
             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("userId",id).apply();
-            User user = new User(Name,Mobile,Email);
+            User user = new User(Name,Mobile,Email,id);
             mUserReference.child(id).setValue(user);
             //Toast.makeText(this,"Login", Toast.LENGTH_SHORT).show();
         }
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == action_logout)
         {
             mAuth.signOut();
-            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("loggedIn",Boolean.FALSE).apply();;
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("loggedIn",Boolean.FALSE).apply();
             Intent SignoutIntent = new Intent(MainActivity.this,Login.class);
             startActivity(SignoutIntent);
         }

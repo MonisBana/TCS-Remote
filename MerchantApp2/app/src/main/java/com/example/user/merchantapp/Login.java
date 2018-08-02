@@ -17,6 +17,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
     private static final String TAG = "EmailPassword";
@@ -24,6 +30,7 @@ public class Login extends AppCompatActivity {
     private Button mLoginBtn, mSignUpBtn;
     private FirebaseAuth mAuth;
     private ProgressDialog pd;
+    private DatabaseReference mUserReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,7 @@ public class Login extends AppCompatActivity {
         mPasswordField = findViewById(R.id.password);
         mLoginBtn = findViewById(R.id.loginBtn);
         mSignUpBtn = findViewById(R.id.signupBtn);
+        mUserReference = FirebaseDatabase.getInstance().getReference().child("User");
         mAuth = FirebaseAuth.getInstance();
         /*mEmailField.setText("test@123.com");
         mPasswordField.setText("79918031");*/
@@ -64,6 +72,22 @@ public class Login extends AppCompatActivity {
                             if(pd.isShowing())
                                 pd.dismiss();
 
+                            mUserReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot fire : dataSnapshot.getChildren()) {
+                                        User temp = fire.getValue(User.class);
+                                        if (temp.getEmail().equals(id)) {
+                                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("userId",temp.getUserId()).apply();
+                                            //Toast.makeText(MyProduct.this,mDataSet.size()+ "", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
                             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("loggedIn",Boolean.TRUE).apply();
                             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("login",Boolean.TRUE).apply();
                             Intent i = new Intent(Login.this,MainActivity.class);

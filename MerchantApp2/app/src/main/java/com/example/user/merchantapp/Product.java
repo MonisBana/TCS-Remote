@@ -1,13 +1,16 @@
 package com.example.user.merchantapp;
 
+import java.util.ArrayList;
+
 public class Product {
     String name,desc,image,id,userid,category;
-    int price,quantity;
-
+    int price,quantity,noOfRating;
+    float rating;
+    ArrayList<Review> review;
     public Product() {
     }
 
-    public Product(String name, String desc, String image, String id, String userid, String category, int price, int quantity) {
+    public Product(String name, String desc, String image, String id, String userid, String category, int price, int quantity, int noOfRating, float rating, ArrayList<Review> review) {
         this.name = name;
         this.desc = desc;
         this.image = image;
@@ -16,6 +19,33 @@ public class Product {
         this.category = category;
         this.price = price;
         this.quantity = quantity;
+        this.noOfRating = noOfRating;
+        this.rating = rating;
+        this.review = review;
+    }
+
+    public int getNoOfRating() {
+        return noOfRating;
+    }
+
+    public void setNoOfRating(int noOfRating) {
+        this.noOfRating = noOfRating;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public ArrayList<Review> getReview() {
+        return review;
+    }
+
+    public void setReview(ArrayList<Review> review) {
+        this.review = review;
     }
 
     public String getCategory() {

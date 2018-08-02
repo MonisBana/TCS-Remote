@@ -43,6 +43,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         viewHolder.Price.setText( "₹"+item.getPrice());
         Picasso.with(mContext).load(item.getImage()).into(viewHolder.Image);
         viewHolder.Category.setText(item.getCategory());
+        viewHolder.Rating.setText(item.getRating()+"");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,11 +69,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         public TextView Price;
         public TextView Category;
         public ImageView Image;
+        public TextView Rating;
         public MyViewHolder(View itemView) {
             super(itemView);
             Name = itemView.findViewById(R.id.productName);
             Price = itemView.findViewById(R.id.productPrice);
             Image = itemView.findViewById(R.id.productImage);
+            Rating = itemView.findViewById(R.id.rating);
             Category = itemView.findViewById(R.id.productCategory);
         }
     }

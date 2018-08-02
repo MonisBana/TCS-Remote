@@ -8,10 +8,11 @@
     <Button
         android:id="@+id/buyNow"
         android:background="@color/colorPrimary"
-        android:text="Buy Now"
+        android:text="Pay"
         android:textColor="@color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:onClick="makePayment"
         />

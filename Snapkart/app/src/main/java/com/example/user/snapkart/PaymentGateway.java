@@ -32,7 +32,6 @@ public class PaymentGateway extends Activity {
 
 
     String amt = null;
-    Button pay = null;
 
     public static final String TAG = "PayUMoneySDK Sample";
 
@@ -41,8 +40,8 @@ public class PaymentGateway extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_gateway);
-        amt = "3000";
-        pay = (Button) findViewById(R.id.buyNow);
+        Intent intent = getIntent();
+        amt = String.valueOf(intent.getIntExtra("amt",-1));
     }
 
     private boolean isDouble(String str) {
@@ -73,7 +72,7 @@ public class PaymentGateway extends Activity {
 
         String phone = "8882434664";
         String productName = "product_name";
-        String firstName = "piyush";
+        String firstName = "monis";
         String txnId = "0nf7" + System.currentTimeMillis();
         String email="piyush.jain@payu.in";
         String sUrl = "https://test.payumoney.com/mobileapp/payumoney/success.php";
