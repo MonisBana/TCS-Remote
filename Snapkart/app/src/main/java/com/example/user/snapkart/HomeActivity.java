@@ -104,8 +104,7 @@ public class HomeActivity extends Activity implements OnClickListener, SurfaceHo
         camera.takePicture(null, null, this);
     }
     public void onPictureTaken(byte[] data, Camera camera) {
-        Uri imageFileUri = getContentResolver().insert(
-                Media.EXTERNAL_CONTENT_URI, new ContentValues());
+        //Uri imageFileUri = getContentResolver().insert(Media.EXTERNAL_CONTENT_URI, new ContentValues());
         Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
         runTextRecognition(bitmap);
         /*try {
