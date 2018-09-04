@@ -23,7 +23,8 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".Login" />
         <activity android:name=".SignUp" />
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".SearchActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity android:name=".FilterActivity" />
 
         <receiver
@@ -40,7 +41,7 @@
 
         <activity
             android:name=".ProductDetails"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".PaymentGateway" />
         <activity android:name=".MyCart">
 

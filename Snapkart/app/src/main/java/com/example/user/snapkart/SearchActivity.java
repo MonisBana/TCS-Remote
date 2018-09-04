@@ -3,15 +3,19 @@ package com.example.user.snapkart;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,11 +44,27 @@ public class SearchActivity extends AppCompatActivity {
     private TextView mPriceLabel,mCategoryLabel;
     private String CustomerId;
     private FirebaseAuth mAuth;
+    private LinearLayout mBackdropView;
+    private TextView mMyCart,mWishList,mLogOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        Toolbar toolbar = findViewById(R.id.app_bar);
+        toolbar.setTitleTextColor(this.getResources().getColor(R.color.white));
+        toolbar.setElevation(10);
+        mBackdropView = findViewById(R.id.backdropView);
+        setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(new NavigationIconClickListener(
+                this,
+                findViewById(R.id.product_grid),
+                mBackdropView,
+                new AccelerateDecelerateInterpolator(),
+                ContextCompat.getDrawable(this,R.drawable.baseline_menu_white_36dp),
+                ContextCompat.getDrawable(this,R.drawable.shr_close_menu)));
         getSupportActionBar().setElevation(0);
         Intent intent = getIntent();
         Category = intent.getStringExtra("category");
@@ -56,6 +76,9 @@ public class SearchActivity extends AppCompatActivity {
         mSearchQuery = findViewById(R.id.searchQuery);
         mPriceLabel = findViewById(R.id.priceLabel);
         mCategoryLabel = findViewById(R.id.categoryLabel);
+        mMyCart = findViewById(R.id.myCartBtn);
+        mWishList = findViewById(R.id.myWishlistBtn);
+        mLogOut = findViewById(R.id.LogoutBtn);
         mAuth = FirebaseAuth.getInstance();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mProductReference = FirebaseDatabase.getInstance().getReference().child("Products");
@@ -102,6 +125,27 @@ public class SearchActivity extends AppCompatActivity {
         });
         CustomerId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("customerId","abc");
         //Toast.makeText(this, CustomerId+"", Toast.LENGTH_SHORT).show();
+        mMyCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SearchActivity.this,MyCart.class));
+            }
+        });
+        mWishList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SearchActivity.this,MyWishlist.class));
+            }
+        });
+        mLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("loggedIn",Boolean.FALSE).apply();;
+                mAuth.signOut();
+                Intent SignoutIntent = new Intent(SearchActivity.this,Login.class);
+                startActivity(SignoutIntent);
+            }
+        });
     }
 
     private void loadFilteredPriceData(String category, final int price, final String searchQuery) {
@@ -352,32 +396,5 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(main_menu,menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if(item.getItemId() == action_mycart){
-            startActivity(new Intent(SearchActivity.this,MyCart.class));
-        }
-        if(item.getItemId() == action_mywishlist){
-            startActivity(new Intent(SearchActivity.this,MyWishlist.class));
-        }
-        if(item.getItemId() == action_logout)
-        {
-            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("loggedIn",Boolean.FALSE).apply();;
-            mAuth.signOut();
-            Intent SignoutIntent = new Intent(SearchActivity.this,Login.class);
-            startActivity(SignoutIntent);
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

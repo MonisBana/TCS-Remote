@@ -5,6 +5,47 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SearchActivity">
+
+    <LinearLayout
+        android:id="@+id/backdropView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="90dp"
+        android:visibility="gone"
+        android:background="@color/colorPrimary">
+
+        <include layout="@layout/shr_backdrop" />
+    </LinearLayout>
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/app_bar"
+            style="@style/Widget.Shrine.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingStart="12dp"
+            android:paddingLeft="12dp"
+            android:paddingEnd="12dp"
+            android:paddingRight="12dp"
+            app:contentInsetStart="0dp"
+            app:navigationIcon="@drawable/baseline_menu_white_36dp"
+            app:title="@string/app_name" />
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:id="@+id/product_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:elevation="8dp"
+        android:orientation="vertical">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <RelativeLayout
         android:id="@+id/r1"
         android:layout_width="match_parent"
@@ -17,11 +58,13 @@
             android:hint="Search"
             android:textSize="16dp"
             android:layout_toLeftOf="@+id/filterBtn"
-            android:layout_marginLeft="8dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:layout_marginBottom="6dp"
-            android:alpha="0.80"/>
+            android:layout_marginLeft="10dp"
+            android:textColor="#000"
+            android:textColorHint="#000000"
+            android:layout_marginRight="8dp"
+            android:padding="4dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/input_outline2"/>
         <ImageButton
             android:id="@+id/filterBtn"
             android:layout_width="wrap_content"
@@ -46,7 +89,7 @@
         android:id="@+id/backdrop"
         android:layout_below="@+id/r1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="30dp"
         android:background="@color/colorPrimary"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,5 +120,7 @@
             android:layout_marginHorizontal="10dp"
             android:paddingTop="8dp"
             android:visibility="gone"/>
+    </LinearLayout>
+</RelativeLayout>
     </LinearLayout>
 </RelativeLayout>
