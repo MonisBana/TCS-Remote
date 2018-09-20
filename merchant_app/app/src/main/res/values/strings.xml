@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Merchant App</string>
+    <string name="category_prompt">Choose a Category</string>
+
+    <string-array name="category_arrays">
+        <item>Mobiles</item>
+        <item>Electronics</item>
+        <item>Home and Appliances</item>
+        <item>Clothing</item>
+        <item>Baby Products</item>
+        <item>Furniture</item>
+    </string-array>
+
+</resources>
